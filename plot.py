@@ -45,17 +45,11 @@ base = alt.Chart(g).encode(
 chart = base.mark_line()
 chart += base.mark_point()
 chart = chart.interactive()
-chart.save('new-vs-infected-accum.html')
 
-chart = alt.Chart(df).mark_line().encode(
+chart &= alt.Chart(df).mark_line().encode(
     x=alt.X('infected_accum:Q'),
-    y=alt.X('infected_this_week_so_far:Q'),
+    y=alt.X('infected_today:Q'),
     tooltip='date:T',
 ).properties(width=700, height=400).interactive()
-chart.save('new-vs-infected-accum_daily.html')
 
-
-
-## Relative change
-
-# df
+chart.save('index.html')
