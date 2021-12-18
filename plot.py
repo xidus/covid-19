@@ -52,7 +52,7 @@ weekly = base_weekly.mark_circle().encode(
 )
 weekly += base_weekly.mark_line()
 weekly += base_weekly.mark_point(
-    size=alt.condition(~highlight, alt.value(20), alt.value(30)),
+    size=alt.Size(condition=alt.condition(~highlight, alt.value(20), alt.value(30))),
     tooltip=[
         'yearweek:N',
         'infected_accum:Q',
@@ -73,7 +73,7 @@ daily = base_daily.mark_circle().encode(
 )
 daily += base_daily.mark_line()
 daily += base_daily.mark_point(
-    size=alt.condition(~highlight, alt.value(20), alt.value(30)),
+    size=alt.Size(condition=alt.condition(~highlight, alt.value(20), alt.value(30))),
     tooltip=[
         'yearweek:N',
         'infected_accum:Q',
