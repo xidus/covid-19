@@ -79,7 +79,7 @@ daily = base_daily.mark_circle().encode(
 
 daily += base_daily.mark_line()
 daily += base_daily.mark_point(
-    size=condition=alt.condition(~highlight, alt.value(20), alt.value(30)),
+    size=alt.condition(~highlight, alt.value(20), alt.value(30)),
 )
 
 chart = weekly.interactive() & daily.interactive()
