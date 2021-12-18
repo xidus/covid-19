@@ -44,6 +44,7 @@ base_weekly = alt.Chart(g).encode(
     x=alt.X('infected_accum:Q', scale=alt.Scale(type='log')),
     y=alt.X('infected_this_week_so_far:Q', scale=alt.Scale(type='log')),
 ).properties(width=700, height=400).interactive()
+
 weekly = base_weekly.mark_circle().encode(
     opacity=alt.value(0)
 ).add_selection(
@@ -51,7 +52,7 @@ weekly = base_weekly.mark_circle().encode(
 )
 weekly += base_weekly.mark_line()
 weekly += base_weekly.mark_point(
-    size=alt.condition(~highlight, alt.value(1), alt.value(3)),
+    size=alt.condition(~highlight, alt.value(20), alt.value(30)),
     tooltip=[
         'yearweek:N',
         'infected_accum:Q',
@@ -64,6 +65,7 @@ base_daily = alt.Chart(df).encode(
     y=alt.X('infected_today:Q'),
 
 ).properties(width=700, height=400).interactive()
+
 daily = base_daily.mark_circle().encode(
     opacity=alt.value(0)
 ).add_selection(
@@ -71,7 +73,7 @@ daily = base_daily.mark_circle().encode(
 )
 daily += base_daily.mark_line()
 daily += base_daily.mark_point(
-    size=alt.condition(~highlight, alt.value(1), alt.value(3)),
+    size=alt.condition(~highlight, alt.value(20), alt.value(30)),
     tooltip=[
         'yearweek:N',
         'infected_accum:Q',
