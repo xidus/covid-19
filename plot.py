@@ -36,9 +36,18 @@ g = g.rename(columns=dict(infected_today='infected_this_week_so_far'))
 highlight = alt.selection(
     type='single',
     on='mouseover',
-    # fields=['symbol'],
+    fields=['symbol'],
     nearest=True,
 )
+nearest = alt.selection(
+    type='single',
+    nearest=True,
+    on='mouseover',
+    fields=['infected_accum'],
+    empty='none',
+)
+
+
 
 base_weekly = alt.Chart(g).encode(
     x=alt.X('infected_accum:Q', scale=alt.Scale(type='log')),
@@ -48,18 +57,29 @@ base_weekly = alt.Chart(g).encode(
         'infected_accum:Q',
         'infected_this_week_so_far:Q',
     ],
-)
-
-weekly = base_weekly.mark_circle().encode(
-    opacity=alt.value(0)
-).add_selection(
-    highlight
 ).properties(width=700, height=400)
 
-weekly += base_weekly.mark_line()
-weekly += base_weekly.mark_point(
-    size=alt.condition(~highlight, alt.value(20), alt.value(30)),
+selectors_weekly = alt.Chart(g).mark_point().encode(
+    x=alt.X('infected_accum:Q'),
+    opacity=alt.value(0),
+).add_selection(
+    nearest,
 )
+
+line_weekly = base_weekly.mark_line()
+points_weekly = base_weekly.mark_point(
+    opacity=alt.condition(nearest, alt.value(1), alt.value(0)),
+)
+text_weekly = base_weekly.mark_text(align='left', dx=5, dy=-5).encode(
+    text=alt.condition(nearest, 'infected_this_week_so_far:Q', alt.value(' '))
+)
+rule_weekly = base_weekly.mark_rule(color='gray').encode(
+    x=alt.X('infected_accum:Q'),
+).transform_filter(
+    nearest
+)
+
+weekly = (line_weekly + selectors_weekly + points_weekly + rule_weekly + text_weekly).interactive()
 
 base_daily = alt.Chart(df).encode(
     x=alt.X('infected_accum:Q'),
@@ -69,18 +89,29 @@ base_daily = alt.Chart(df).encode(
         'infected_accum:Q',
         'infected_today:Q',
     ],
-)
+).properties(width=700, height=400)
 
-daily = base_daily.mark_circle().encode(
-    opacity=alt.value(0)
+selectors_daily = alt.Chart(df).mark_point().encode(
+    x=alt.X('infected_accum:Q'),
+    opacity=alt.value(0),
 ).add_selection(
-    highlight
-).properties(width=700, height=400).interactive()
-
-daily += base_daily.mark_line()
-daily += base_daily.mark_point(
-    size=alt.condition(~highlight, alt.value(20), alt.value(30)),
+    nearest,
 )
 
-chart = weekly.interactive() & daily.interactive()
+line_daily = base_daily.mark_line()
+points_daily = base_daily.mark_point(
+    opacity=alt.condition(nearest, alt.value(1), alt.value(0)),
+)
+text_daily = base_daily.mark_text(align='left', dx=5, dy=-5).encode(
+    text=alt.condition(nearest, 'infected_today:Q', alt.value(' '))
+)
+rule_daily = base_daily.mark_rule(color='gray').encode(
+    x=alt.X('infected_accum:Q'),
+).transform_filter(
+    nearest
+)
+
+daily = (lines_daily + selectors_daily + points_daily + rule_daily + text_daily).interactive()
+
+chart = weekly & daily
 chart.save('index.html')
