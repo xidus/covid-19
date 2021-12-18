@@ -67,7 +67,7 @@ selectors_weekly = alt.Chart(g).mark_point().encode(
 )
 
 line_weekly = base_weekly.mark_line()
-points_weekly = base_weekly.mark_point(
+points_weekly = base_weekly.mark_point().encode(
     opacity=alt.condition(nearest, alt.value(1), alt.value(0)),
 )
 text_weekly = base_weekly.mark_text(align='left', dx=5, dy=-5).encode(
@@ -99,7 +99,7 @@ selectors_daily = alt.Chart(df).mark_point().encode(
 )
 
 line_daily = base_daily.mark_line()
-points_daily = base_daily.mark_point(
+points_daily = base_daily.mark_point().encode(
     opacity=alt.condition(nearest, alt.value(1), alt.value(0)),
 )
 text_daily = base_daily.mark_text(align='left', dx=5, dy=-5).encode(
