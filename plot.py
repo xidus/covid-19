@@ -36,7 +36,7 @@ g = g.rename(columns=dict(infected_today='infected_this_week_so_far'))
 highlight = alt.selection(
     type='single',
     on='mouseover',
-    fields=['symbol'],
+    # fields=['symbol'],
     nearest=True,
 )
 
