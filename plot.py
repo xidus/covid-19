@@ -68,13 +68,18 @@ selectors_weekly = alt.Chart(g).mark_point().encode(
 
 line_weekly = base_weekly.mark_line()
 points_weekly = base_weekly.mark_point().encode(
-    opacity=alt.condition(nearest, alt.value(1), alt.value(0)),
+    opacity=alt.condition(nearest, alt.value(1), alt.value(0.5)),
 )
 text_weekly = base_weekly.mark_text(align='left', dx=5, dy=-5).encode(
     text=alt.condition(nearest, 'infected_this_week_so_far:Q', alt.value(' '))
 )
 rule_weekly = base_weekly.mark_rule(color='gray').encode(
     x=alt.X('infected_accum:Q'),
+    tooltip=[
+        'yearweek:N',
+        'infected_accum:Q',
+        'infected_this_week_so_far:Q',
+    ],
 ).transform_filter(
     nearest
 )
@@ -84,11 +89,6 @@ weekly = (line_weekly + selectors_weekly + points_weekly + rule_weekly + text_we
 base_daily = alt.Chart(df).encode(
     x=alt.X('infected_accum:Q'),
     y=alt.X('infected_today:Q'),
-    tooltip=[
-        'yearweek:N',
-        'infected_accum:Q',
-        'infected_today:Q',
-    ],
 ).properties(width=700, height=400)
 
 selectors_daily = alt.Chart(df).mark_point().encode(
@@ -100,13 +100,18 @@ selectors_daily = alt.Chart(df).mark_point().encode(
 
 line_daily = base_daily.mark_line()
 points_daily = base_daily.mark_point().encode(
-    opacity=alt.condition(nearest, alt.value(1), alt.value(0)),
+    opacity=alt.condition(nearest, alt.value(1), alt.value(0.5)),
 )
 text_daily = base_daily.mark_text(align='left', dx=5, dy=-5).encode(
-    text=alt.condition(nearest, 'infected_today:Q', alt.value(' '))
+    text=alt.condition(nearest, 'infected_today:Q', alt.value(' ')),
 )
 rule_daily = base_daily.mark_rule(color='gray').encode(
     x=alt.X('infected_accum:Q'),
+    tooltip=[
+        'yearweek:N',
+        'infected_accum:Q',
+        'infected_today:Q',
+    ],
 ).transform_filter(
     nearest
 )
