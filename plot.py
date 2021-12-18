@@ -111,7 +111,7 @@ rule_daily = base_daily.mark_rule(color='gray').encode(
     nearest
 )
 
-daily = (lines_daily + selectors_daily + points_daily + rule_daily + text_daily).interactive()
+daily = (line_daily + selectors_daily + points_daily + rule_daily + text_daily).interactive()
 
 chart = weekly & daily
 chart.save('index.html')
