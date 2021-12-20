@@ -87,6 +87,6 @@ def main():
     chart = weekly & daily
     chart.save('index.html')
 
-    if __name__ == '__main__':
-        main()
-    
+
+if __name__ == '__main__':
+    main()
