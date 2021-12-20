@@ -32,6 +32,7 @@ jobs:
       run: |
         wget https://github.com/mok0/covid19-data-denmark/raw/master/covid19-data-denmark.csv -O covid19-data-denmark.csv
         python plot.py
+        touch .nojekyll
     - name: Commit and push if it changed
       run: |-
         git config user.name "Automated"
