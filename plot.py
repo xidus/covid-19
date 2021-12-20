@@ -62,7 +62,7 @@ text_data = [
     'infected_accum:Q',
     'infected_this_week_so_far:Q',
 ]
-text_weekly = base_weekly.mark_text(align='right', valign='bottom', dx=5, dy=-5).encode(
+text_weekly = base_weekly.mark_text(align='right', baseline='bottom', dx=5, dy=-5).encode(
     text=alt.condition(nearest, text_data, alt.value(' '))
 )
 rule_weekly = base_weekly.mark_rule(color='gray').encode(
