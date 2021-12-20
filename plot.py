@@ -33,12 +33,6 @@ g = g.reset_index('yearweek')
 # Rename columns after aggregation
 g = g.rename(columns=dict(infected_today='infected_this_week_so_far'))
 
-highlight = alt.selection(
-    type='single',
-    on='mouseover',
-    fields=['symbol'],
-    nearest=True,
-)
 nearest = alt.selection(
     type='single',
     nearest=True,
@@ -47,16 +41,9 @@ nearest = alt.selection(
     empty='none',
 )
 
-
-
 base_weekly = alt.Chart(g).encode(
     x=alt.X('infected_accum:Q', scale=alt.Scale(type='log')),
     y=alt.X('infected_this_week_so_far:Q', scale=alt.Scale(type='log')),
-    tooltip=[
-        'yearweek:N',
-        'infected_accum:Q',
-        'infected_this_week_so_far:Q',
-    ],
 ).properties(width=700, height=400)
 
 selectors_weekly = alt.Chart(g).mark_point().encode(
@@ -70,8 +57,13 @@ line_weekly = base_weekly.mark_line()
 points_weekly = base_weekly.mark_point().encode(
     opacity=alt.condition(nearest, alt.value(1), alt.value(0.5)),
 )
-text_weekly = base_weekly.mark_text(align='left', dx=5, dy=-5).encode(
-    text=alt.condition(nearest, 'infected_this_week_so_far:Q', alt.value(' '))
+text_data = [
+    'yearweek:N',
+    'infected_accum:Q',
+    'infected_this_week_so_far:Q',
+]
+text_weekly = base_weekly.mark_text(align='right', valign='bottom', dx=5, dy=-5).encode(
+    text=alt.condition(nearest, text_data, alt.value(' '))
 )
 rule_weekly = base_weekly.mark_rule(color='gray').encode(
     x=alt.X('infected_accum:Q'),
