@@ -62,7 +62,7 @@ def main():
     # df = pd.read_csv('covid19-data-denmark.csv')
 
     n = df.copy()
-    years = n.date.dt.year
+    years = n.date.dt.isocalendar().year
     weeks = n.date.dt.isocalendar().week
     n['yearweek'] = years.astype(str) + '-' + weeks.map(lambda w: f'{w:02d}')
     aggregates = {
