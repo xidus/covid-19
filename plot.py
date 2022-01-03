@@ -34,7 +34,7 @@ def make_chart(df: pd.DataFrame, y: str = None, loglog: bool = False) -> alt.Cha
     if 'yearweek' in df:
         tooltip_base = ['yearweek:N']
     else:
-        tooltip_base = ['yearweek:N']
+        tooltip_base = ['date:T']
     tooltip = tooltip_base + [
         'infected_accum:Q',
         y,
