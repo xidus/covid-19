@@ -22,32 +22,37 @@ def make_chart(df: pd.DataFrame, y: str = None, loglog: bool = False) -> alt.Cha
         y=alt.Y(y, **base_kwargs),
     ).properties(width=700, height=400)
 
-    selectors_weekly = alt.Chart(df).mark_point().encode(
+    selectors = alt.Chart(df).mark_point().encode(
         x=alt.X('infected_accum:Q'),
         opacity=alt.value(0),
     ).add_selection(
         nearest,
     )
 
-    line_weekly = base_weekly.mark_line()
-    points_weekly = base_weekly.mark_point().encode(
+    line = base.mark_line()
+
+    if 'yearweek' in df:
+        tooltip_base = ['yearweek:N']
+    else:
+        tooltip_base = ['yearweek:N']
+    tooltip = tooltip_base + [
+        'infected_accum:Q',
+        y,
+    ]
+    points = base.mark_point().encode(
         opacity=alt.condition(nearest, alt.value(1), alt.value(0.5)),
-        tooltip=[
-            'yearweek:N',
-            'infected_accum:Q',
-            y,
-        ],
+        tooltip=tooltip,
     )
-    text_weekly = base_weekly.mark_text(align='right', baseline='bottom', dx=5, dy=-5).encode(
+    text = base.mark_text(align='right', baseline='bottom', dx=5, dy=-5).encode(
         text=alt.condition(nearest, y, alt.value(' '))
     )
-    rule_weekly = base_weekly.mark_rule(color='gray').encode(
+    rule = base.mark_rule(color='gray').encode(
         x=alt.X('infected_accum:Q'),
     ).transform_filter(
         nearest
     )
 
-    return (line_weekly + selectors_weekly + points_weekly + rule_weekly + text_weekly).interactive()
+    return (line + selectors + points + rule + text).interactive()
 
 
 def main():
