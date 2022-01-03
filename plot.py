@@ -17,7 +17,7 @@ def make_chart(df: pd.DataFrame, y: str = None, loglog: bool = False) -> alt.Cha
     base_kwargs = dict()
     if loglog is True:
         base_kwargs.update(scale=alt.Scale(type='log'))
-    base_weekly = alt.Chart(df).encode(
+    base = alt.Chart(df).encode(
         x=alt.X('infected_accum:Q', **base_kwargs),
         y=alt.Y(y, **base_kwargs),
     ).properties(width=700, height=400)
