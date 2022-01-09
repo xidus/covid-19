@@ -20,6 +20,7 @@ def make_chart(df: pd.DataFrame, y: str = None, loglog: bool = False) -> alt.Cha
     base = alt.Chart(df).encode(
         x=alt.X('infected_accum:Q', **base_kwargs),
         y=alt.Y(y, **base_kwargs),
+        color='year(date)',
     ).properties(width=700, height=400)
 
     selectors = alt.Chart(df).mark_point().encode(
